@@ -32,9 +32,9 @@ namespace API.Migrations
                 columns: new[] { "TarefaId", "CriadoEm", "Status", "Titulo" },
                 values: new object[,]
                 {
-                    { "2f1b7dc1-3b9a-4e1a-a389-7f5d2f1c8f3e", new DateTime(2025, 11, 17, 9, 7, 8, 270, DateTimeKind.Local).AddTicks(9337), "Não iniciada", "Estudar Angular" },
-                    { "6a8b3e4d-5e4e-4f7e-bdc9-9181e456ad0e", new DateTime(2025, 11, 21, 9, 7, 8, 270, DateTimeKind.Local).AddTicks(9327), "Não iniciada", "Concluir relatório" },
-                    { "e5d4a7b9-1f9e-4c4a-ae3b-5b7c1a9d2e3f", new DateTime(2025, 11, 28, 9, 7, 8, 270, DateTimeKind.Local).AddTicks(9342), "Não iniciada", "Passeio no parque" }
+                    { "2f1b7dc1-3b9a-4e1a-a389-7f5d2f1c8f3e", new DateTime(2025, 11, 17, 9, 49, 9, 556, DateTimeKind.Local).AddTicks(1324), "Não iniciada", "Estudar Angular" },
+                    { "6a8b3e4d-5e4e-4f7e-bdc9-9181e456ad0e", new DateTime(2025, 11, 21, 9, 49, 9, 556, DateTimeKind.Local).AddTicks(1318), "Não iniciada", "Concluir relatório" },
+                    { "e5d4a7b9-1f9e-4c4a-ae3b-5b7c1a9d2e3f", new DateTime(2025, 11, 28, 9, 49, 9, 556, DateTimeKind.Local).AddTicks(1329), "Não iniciada", "Passeio no parque" }
                 });
         }
 

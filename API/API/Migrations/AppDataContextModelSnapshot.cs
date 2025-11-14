@@ -39,21 +39,21 @@ namespace API.Migrations
                         new
                         {
                             TarefaId = "6a8b3e4d-5e4e-4f7e-bdc9-9181e456ad0e",
-                            CriadoEm = new DateTime(2025, 11, 21, 9, 7, 8, 270, DateTimeKind.Local).AddTicks(9327),
+                            CriadoEm = new DateTime(2025, 11, 21, 9, 49, 9, 556, DateTimeKind.Local).AddTicks(1318),
                             Status = "Não iniciada",
                             Titulo = "Concluir relatório"
                         },
                         new
                         {
                             TarefaId = "2f1b7dc1-3b9a-4e1a-a389-7f5d2f1c8f3e",
-                            CriadoEm = new DateTime(2025, 11, 17, 9, 7, 8, 270, DateTimeKind.Local).AddTicks(9337),
+                            CriadoEm = new DateTime(2025, 11, 17, 9, 49, 9, 556, DateTimeKind.Local).AddTicks(1324),
                             Status = "Não iniciada",
                             Titulo = "Estudar Angular"
                         },
                         new
                         {
                             TarefaId = "e5d4a7b9-1f9e-4c4a-ae3b-5b7c1a9d2e3f",
-                            CriadoEm = new DateTime(2025, 11, 28, 9, 7, 8, 270, DateTimeKind.Local).AddTicks(9342),
+                            CriadoEm = new DateTime(2025, 11, 28, 9, 49, 9, 556, DateTimeKind.Local).AddTicks(1329),
                             Status = "Não iniciada",
                             Titulo = "Passeio no parque"
                         });

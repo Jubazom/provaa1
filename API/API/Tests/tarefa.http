@@ -6,8 +6,19 @@ POST http://localhost:5000/api/tarefas/cadastrar
 Content-Type: application/json
 
 {
-    "titulo": "Estudar Node.js"
+    "titulo": "TESTE PARA VER SE PEGA",
+    "status": "Não iniciada"
 }
 
-### Alterar o status de uma tarefa
-PUT http://localhost:5000/api/tarefas/alterar/{id}70fbdf06-806c-4acd-b652-66143fc4c23f
+### Alterar uma tarefa
+PATCH http://localhost:5000/api/tarefa/alterar
+Content-Type: application/json
+
+{
+    "tarefaId": "6a8b3e4d-5e4e-4f7e-bdc9-9181e456ad0e",
+    "titulo": "Concluir relatório",
+    "status": "Não iniciada"
+}
+
+### Listar tarefas não concluídas
+GET http://localhost:5000/api/tarefas/naoconcluidas

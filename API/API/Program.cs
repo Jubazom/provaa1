@@ -5,6 +5,13 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
 
+builder.Services.AddCors(options => options.AddPolicy
+("Acesso Total", configs => configs
+.AllowAnyOrigin()
+.AllowAnyHeader()
+.AllowAnyMethod()) 
+);
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Juliano");
@@ -53,7 +60,7 @@ app.MapPut("/api/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx, [Fro
         }
         else
         {
-            return Results.BadRequest("Transição inválida");
+            return Results.BadRequest("Deu ruim aqui parceiro");
         }
     }
     else if (tarefa.Status == "Em andamento")
@@ -64,7 +71,7 @@ app.MapPut("/api/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx, [Fro
         }
         else
         {
-            return Results.BadRequest("Transição inválida");
+            return Results.BadRequest("Deu ruim aqui parceiro");
         }
     }
     else
@@ -77,16 +84,54 @@ app.MapPut("/api/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx, [Fro
     return Results.Ok(tarefa);
 });
 
-//GET: http://localhost:5000/tarefas/naoconcluidas
+//PATCH: http://localhost:5000/api/tarefa/alterar
+app.MapPatch("/api/tarefa/alterar", ([FromServices] AppDataContext ctx, [FromBody] Tarefa tarefa) =>
+{
+    var tarefaExistente = ctx.Tarefas.FirstOrDefault(t => t.TarefaId == tarefa.TarefaId);
+    
+    if (tarefaExistente == null)
+    {
+        return Results.NotFound("Tarefa não encontrada");
+    }
+
+    // Lógica de transição de status automática
+    if (tarefaExistente.Status == "Não iniciada")
+    {
+        tarefaExistente.Status = "Em andamento";
+    }
+    else if (tarefaExistente.Status == "Em andamento")
+    {
+        tarefaExistente.Status = "Concluída";
+    }
+
+    ctx.Tarefas.Update(tarefaExistente);
+    ctx.SaveChanges();
+    return Results.Ok(tarefaExistente);
+});
+
+//GET: http://localhost:5000/api/tarefas/naoconcluidas
 app.MapGet("/api/tarefas/naoconcluidas", ([FromServices] AppDataContext ctx) =>
 {
-    //Implementar a listagem de tarefas não concluídas
+    var tarefasNaoConcluidas = ctx.Tarefas.Where(t => t.Status != "Concluída").ToList();
+    
+    if (tarefasNaoConcluidas.Any())
+    {
+        return Results.Ok(tarefasNaoConcluidas);
+    }
+    return Results.NotFound("Nenhuma tarefa não concluída encontrada");
 });
 
-//GET: http://localhost:5000/tarefas/concluidas
+//GET: http://localhost:5000/api/tarefas/concluidas
 app.MapGet("/api/tarefas/concluidas", ([FromServices] AppDataContext ctx) =>
 {
-    //Implementar a listagem de tarefas concluídas
+    var tarefasConcluidas = ctx.Tarefas.Where(t => t.Status == "Concluída").ToList();
+    
+    if (tarefasConcluidas.Any())
+    {
+        return Results.Ok(tarefasConcluidas);
+    }
+    return Results.NotFound("Nenhuma tarefa concluída encontrada");
 });
 
+app.UseCors("Acesso Total");
 app.Run();

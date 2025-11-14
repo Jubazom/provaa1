@@ -4,6 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 public class Tarefa
 {
+    public Tarefa() { }
+    
+    public Tarefa(string titulo, string status = "Não iniciada")
+    {
+        Titulo = titulo;
+        Status = status;
+    }
+
     [Key]
     public string TarefaId { get; set; } = Guid.NewGuid().ToString();
     public string? Titulo { get; set; }

@@ -7,10 +7,10 @@ builder.Services.AddDbContext<AppDataContext>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "COLOQUE O SEU NOME");
+app.MapGet("/", () => "Juliano");
 
 //ENDPOINTS DE TAREFA
-//GET: http://localhost:5273/api/tarefas/listar
+//GET: http://localhost:5000/api/tarefas/listar
 app.MapGet("/api/tarefas/listar", ([FromServices] AppDataContext ctx) =>
 {
     if (ctx.Tarefas.Any())
@@ -20,7 +20,7 @@ app.MapGet("/api/tarefas/listar", ([FromServices] AppDataContext ctx) =>
     return Results.NotFound("Nenhuma tarefa encontrada");
 });
 
-//POST: http://localhost:5273/api/tarefas/cadastrar
+//POST: http://localhost:5000/api/tarefas/cadastrar
 app.MapPost("/api/tarefas/cadastrar", ([FromServices] AppDataContext ctx, [FromBody] Tarefa tarefa) =>
 {
     ctx.Tarefas.Add(tarefa);
@@ -28,19 +28,62 @@ app.MapPost("/api/tarefas/cadastrar", ([FromServices] AppDataContext ctx, [FromB
     return Results.Created("", tarefa);
 });
 
-//PUT: http://localhost:5273/tarefas/alterar/{id}
-app.MapPut("/api/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx, [FromRoute] string id) =>
+//PUT: http://localhost:5000/api/tarefas/alterar/{id}
+app.MapPut("/api/tarefas/alterar/{id}", ([FromServices] AppDataContext ctx, [FromRoute] string id, [FromBody] Tarefa tarefaAtualizada) =>
 {
-    //Implementar a alteração do status da tarefa
+    var tarefa = ctx.Tarefas.FirstOrDefault(t => t.TarefaId == id);
+    
+    if (tarefa == null)
+    {
+        return Results.NotFound("Tarefa não encontrada");
+    }
+
+    // Atualizar Titulo se fornecido
+    if (!string.IsNullOrEmpty(tarefaAtualizada.Titulo))
+    {
+        tarefa.Titulo = tarefaAtualizada.Titulo;
+    }
+    
+    // Lógica de transição de status
+    if (tarefa.Status == "Não iniciada")
+    {
+        if (tarefaAtualizada.Status == "Em andamento")
+        {
+            tarefa.Status = "Em andamento";
+        }
+        else
+        {
+            return Results.BadRequest("Transição inválida");
+        }
+    }
+    else if (tarefa.Status == "Em andamento")
+    {
+        if (tarefaAtualizada.Status == "Concluída")
+        {
+            tarefa.Status = "Concluída";
+        }
+        else
+        {
+            return Results.BadRequest("Transição inválida");
+        }
+    }
+    else
+    {
+        return Results.BadRequest("Status inválido");
+    }
+
+    ctx.Tarefas.Update(tarefa);
+    ctx.SaveChanges();
+    return Results.Ok(tarefa);
 });
 
-//GET: http://localhost:5273/tarefas/naoconcluidas
+//GET: http://localhost:5000/tarefas/naoconcluidas
 app.MapGet("/api/tarefas/naoconcluidas", ([FromServices] AppDataContext ctx) =>
 {
     //Implementar a listagem de tarefas não concluídas
 });
 
-//GET: http://localhost:5273/tarefas/concluidas
+//GET: http://localhost:5000/tarefas/concluidas
 app.MapGet("/api/tarefas/concluidas", ([FromServices] AppDataContext ctx) =>
 {
     //Implementar a listagem de tarefas concluídas

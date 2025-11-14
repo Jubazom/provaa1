@@ -15,18 +15,22 @@ function ListarTarefas() {
       <h1>Listar Tarefas</h1>
       {erro && <p>{erro}</p>}
       <table border={1}>
-        <tr>
-          <th>Título</th>
-          <th>Descrição</th>
-          <th>Status</th>
-        </tr>
-        {tarefas.map((t) => (
-          <tr key={t.tarefaId}>
-            <td>{t.titulo}</td>
-            <td>{t.descricao}</td>
-            <td>{t.status}</td>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Status</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {tarefas.map((t) => (
+            <tr key={t.tarefaId}>
+              <td>{t.titulo}</td>
+              <td>{t.descricao}</td>
+              <td>{t.status}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
